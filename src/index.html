@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Expense Tracker — Clamor</title>
+<meta name="description" content="Track income and expenses by category, see monthly summaries and charts, set budget alerts, and export to CSV. Data stays in your browser.">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><span class="logo" aria-hidden="true">💰</span><div><h1>Expense Tracker</h1><p>Your money, at a glance — stored only in your browser</p></div></div>
+  <div class="top-actions"><button id="exportBtn" type="button">⬇ Export CSV</button><button id="seedBtn" type="button" class="ghost">Load sample data</button><button id="clearBtn" type="button" class="ghost danger">Clear all</button></div>
+</header>
+<main>
+  <section class="summary" aria-label="Monthly summary">
+    <div class="sum-card income"><span>Income (this month)</span><strong id="sumIncome">₹0</strong></div>
+    <div class="sum-card expense"><span>Expenses (this month)</span><strong id="sumExpense">₹0</strong></div>
+    <div class="sum-card balance"><span>Balance (all time)</span><strong id="sumBalance">₹0</strong></div>
+    <div class="sum-card count"><span>Transactions</span><strong id="sumCount">0</strong></div>
+  </section>
+  <div id="alerts" class="alerts" role="alert"></div>
+  <div class="layout">
+    <section class="card form-card">
+      <h2 id="formTitle">Add transaction</h2>
+      <form id="txForm">
+        <label>Type <select id="txType"><option value="expense">Expense</option><option value="income">Income</option></select></label>
+        <label>Amount (₹) <input id="txAmount" type="number" min="0.01" step="0.01" required placeholder="e.g. 450"></label>
+        <label>Category <select id="txCategory"></select></label>
+        <label>Date <input id="txDate" type="date" required></label>
+        <label>Note <input id="txNote" type="text" placeholder="e.g. Groceries at the market" maxlength="80"></label>
+        <button type="submit" id="submitBtn">Add transaction</button>
+        <button type="button" id="cancelEdit" class="ghost" hidden>Cancel edit</button>
+      </form>
+      <h3>Monthly budgets</h3>
+      <p class="muted">Set a monthly limit per category — you get an alert when spending passes it.</p>
+      <div id="budgetForm" class="budgets"></div>
+    </section>
+    <section class="card chart-card">
+      <h2>Spending by category <span class="hint">— this month</span></h2>
+      <canvas id="categoryChart" width="520" height="300" aria-label="Spending by category chart"></canvas>
+      <div id="categoryList" class="cat-list"></div>
+      <h2>Daily spending <span class="hint">— last 30 days</span></h2>
+      <canvas id="dailyChart" width="520" height="200" aria-label="Daily spending chart"></canvas>
+    </section>
+  </div>
+  <section class="card">
+    <h2>Transactions</h2>
+    <div class="filters">
+      <select id="filterCategory" aria-label="Filter by category"><option value="">All categories</option></select>
+      <select id="filterType" aria-label="Filter by type"><option value="">Income + expenses</option><option value="income">Income only</option><option value="expense">Expenses only</option></select>
+      <input id="filterFrom" type="date" aria-label="From date"><input id="filterTo" type="date" aria-label="To date">
+      <input id="filterSearch" type="text" placeholder="Search notes…" aria-label="Search notes">
+      <button id="resetFilters" type="button" class="ghost">Reset</button>
+    </div>
+    <div class="table-wrap"><table><thead><tr><th>Date</th><th>Note</th><th>Category</th><th>Type</th><th class="num">Amount</th><th></th></tr></thead><tbody id="txTable"></tbody></table></div>
+    <p id="emptyMsg" class="muted">No transactions yet — add one above, or load the sample data to explore the charts.</p>
+  </section>
+</main>
+<footer><p>Data never leaves your browser (localStorage) · CSV export opens cleanly in Excel · Built by Clamor.</p></footer>
+<script src="app.js"></script>
+</body>
+</html>
